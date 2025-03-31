@@ -4,6 +4,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
 
 
 def load_it_data(path_to_data):
@@ -58,3 +59,13 @@ def visualize_img(stimulus,objects,stim_idx):
     plt.title(str(objects[stim_idx]))
     plt.show()
     return
+
+def save_pkl(obj, file_name):
+    if not file_name.endswith(".pkl"):
+        file_name += ".pkl"
+    with open(file_name, 'wb') as file:
+        pickle.dump(obj, file)
+        
+def load_pkl(file_name):
+    with open(file_name, 'rb') as file:
+        return pickle.load(file)

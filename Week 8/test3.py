@@ -1,3 +1,14 @@
+
+from utils import load_it_data, visualize_img
+import matplotlib.pyplot as plt
+import numpy as np
+import gdown
+
+path_to_data = '' ## Insert the folder where the data is, if you download in the same folder as this notebook then leave it blank
+
+stimulus_train, stimulus_val, stimulus_test, objects_train, objects_val, objects_test, spikes_train, spikes_val = load_it_data(path_to_data)
+
+
 import os
 import h5py
 import numpy as np
@@ -411,7 +422,8 @@ class ITNeuralPredictor:
 
 
 
-
+print("cuda available:", torch.cuda.is_available())
+#device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 
@@ -434,15 +446,16 @@ val_loader = DataLoader(val_dataset, batch_size=64)
 #model = torch.load('it_neural_predictor.pth', map_location=torch.device('cpu'))
 #state_dict = torch.load('it_neural_predictor.pth', map_location=torch.device('cpu'))
 
-model = ITNeuralPredictor()
+model = ITNeuralPredictor(device = torch.device("cuda" if torch.cuda.is_available() else "cpu"))
+model.load_model('it_neural_predictor.pth')
 
-loaded_dict = torch.load('it_neural_predictor.pth')
+#loaded_dict = torch.load('it_neural_predictor.pth')
 
 # Print the keys to see what's inside
-print(loaded_dict.keys())
+#print(loaded_dict.keys())
 
 # Apply the loaded state dictionary to your model
-model.load_state_dict(state_dict)
+#model.load_state_dict(state_dict)
 
 
 model.eval()

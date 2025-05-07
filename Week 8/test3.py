@@ -446,7 +446,8 @@ val_loader = DataLoader(val_dataset, batch_size=64)
 #model = torch.load('it_neural_predictor.pth', map_location=torch.device('cpu'))
 #state_dict = torch.load('it_neural_predictor.pth', map_location=torch.device('cpu'))
 
-model = ITNeuralPredictor(device = torch.device("cuda" if torch.cuda.is_available() else "cpu"))
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = ITNeuralPredictor(device=device)
 model.load_model('it_neural_predictor.pth')
 
 #loaded_dict = torch.load('it_neural_predictor.pth')
@@ -458,16 +459,19 @@ model.load_model('it_neural_predictor.pth')
 #model.load_state_dict(state_dict)
 
 
-model.eval()
+#model.eval()
+model.backbone.eval()
+model.regression_head.eval()
 val_all = None 
 y_all = None
 
 with torch.no_grad():
     for X_val, y_val in val_loader:
         X_val, y_val = X_val.to(device), y_val.to(device)
-        val_outputs = model(X_val)
-        val_np = val_outputs.detach().cpu().numpy()
-        y_np = y_val.detach().cpu().numpy()
+        val_outputs = model.predict(X_val)
+        val_np = val_outputs #.detach().cpu().numpy()
+        #y_np = y_val #.detach().cpu().numpy()
+        y_np = y_val.cpu().numpy()
         if val_all is None:
             val_all = val_np
             y_all = y_np

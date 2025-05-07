@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=ridge_all_layers_tuning          # job name
-#SBATCH --output=outputofpyfile.log
+#SBATCH --output=outputofpyfile3.log
 
 
 #SBATCH --gres=gpu:1              # request 1 GPU, commented out
@@ -16,4 +16,4 @@ source conda activate nx414N  # or conda activate myenv
 
 # Run your Python script
 #python test.py
-python test2.py
+python test3.py
